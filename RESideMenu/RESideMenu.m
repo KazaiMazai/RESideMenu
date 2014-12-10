@@ -38,6 +38,9 @@
 @property (strong, readwrite, nonatomic) UIView *contentViewContainer;
 @property (assign, readwrite, nonatomic) BOOL didNotifyDelegate;
 
+@property (assign, readwrite, nonatomic) BOOL animatingContentController;
+
+
 @end
 
 @implementation RESideMenu
@@ -157,6 +160,13 @@
     if (!animated) {
         [self setContentViewController:contentViewController];
     } else {
+        
+        if (self.animatingContentController) {
+            return;
+        }
+        
+        self.animatingContentController = YES;
+        
         [self addChildViewController:contentViewController];
         contentViewController.view.alpha = 0;
         contentViewController.view.frame = self.contentViewContainer.bounds;
@@ -174,6 +184,8 @@
             if (self.visible) {
                 [self addContentViewControllerMotionEffects];
             }
+            
+            self.animatingContentController = NO;
         }];
     }
 }
