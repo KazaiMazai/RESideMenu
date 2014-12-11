@@ -35,7 +35,6 @@
 @property (assign, readwrite, nonatomic) BOOL rightMenuVisible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIView *menuViewContainer;
-@property (strong, readwrite, nonatomic) UIView *contentViewContainer;
 @property (assign, readwrite, nonatomic) BOOL didNotifyDelegate;
 
 @property (assign, readwrite, nonatomic) BOOL animatingContentController;
@@ -169,7 +168,7 @@
         
         [self addChildViewController:contentViewController];
         contentViewController.view.alpha = 0;
-        contentViewController.view.frame = self.contentViewContainer.bounds;
+        contentViewController.view.frame = self.contentViewController.view.frame;
         [self.contentViewContainer addSubview:contentViewController.view];
         [UIView animateWithDuration:self.animationDuration animations:^{
             contentViewController.view.alpha = 1;

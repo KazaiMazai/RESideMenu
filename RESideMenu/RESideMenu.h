@@ -77,6 +77,7 @@
 //kostil
 
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
+@property (strong, readwrite, nonatomic) UIView *contentViewContainer;
 
 - (id)initWithContentViewController:(UIViewController *)contentViewController
              leftMenuViewController:(UIViewController *)leftMenuViewController
