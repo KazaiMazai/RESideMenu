@@ -86,7 +86,7 @@
 - (void)presentRightMenuViewController;
 - (void)hideMenuViewController;
 - (void)setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated;
-
+- (void)setContentViewController:(UIViewController *)contentViewController withRollingUpAnimation:(BOOL)animated;
 @end
 
 @protocol RESideMenuDelegate <NSObject>

@@ -189,6 +189,71 @@
     }
 }
 
+- (void)setContentViewController:(UIViewController *)contentViewController withRollingUpAnimation:(BOOL)animated
+{
+    if (_contentViewController == contentViewController)
+    {
+        return;
+    }
+    
+    if (!animated) {
+        [self setContentViewController:contentViewController];
+    } else {
+        
+        if (self.animatingContentController) {
+            return;
+        }
+        
+        self.animatingContentController = YES;
+        
+        [self addChildViewController:contentViewController];
+        contentViewController.view.alpha = 0;
+        CGRect correctFrame = self.contentViewController.view.frame;
+
+        CGRect wrongFrame = CGRectMake(0, correctFrame.size.height, correctFrame.size.width, correctFrame.size.height);
+        
+        contentViewController.view.frame = wrongFrame;
+        [self.contentViewContainer addSubview:contentViewController.view];
+     
+        contentViewController.view.alpha = 1;
+        [UIView animateWithDuration:self.animationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            
+            contentViewController.view.frame = correctFrame;
+        } completion:^(BOOL finished) {
+            [self hideViewController:self.contentViewController];
+            [contentViewController didMoveToParentViewController:self];
+            _contentViewController = contentViewController;
+            
+            [self statusBarNeedsAppearanceUpdate];
+            [self updateContentViewShadow];
+            
+            if (self.visible) {
+                [self addContentViewControllerMotionEffects];
+            }
+            
+            self.animatingContentController = NO;
+        }];
+        
+//        [UIView animateWithDuration:self.animationDuration animations:^{
+//            contentViewController.view.alpha = 1;
+//            contentViewController.view.frame = correctFrame;
+//        } completion:^(BOOL finished) {
+//            [self hideViewController:self.contentViewController];
+//            [contentViewController didMoveToParentViewController:self];
+//            _contentViewController = contentViewController;
+//            
+//            [self statusBarNeedsAppearanceUpdate];
+//            [self updateContentViewShadow];
+//            
+//            if (self.visible) {
+//                [self addContentViewControllerMotionEffects];
+//            }
+//            
+//            self.animatingContentController = NO;
+//        }];
+    }
+}
+
 #pragma mark View life cycle
 
 - (void)viewDidLoad
